@@ -2,22 +2,27 @@ import Course from "../models/courseModel"
 import cloudinary from "../utils/cloudinary"
 
 export const uploadImage = async (req, res) => {
-  console.log(req.method)
+  // console.log(req.body.data)
 
-  const images = req.body.images
+  const fileStr = req.body.data
+  const result = await cloudinary.uploader.upload(fileStr, {
+    folder: "ofu",
+  })
+  console.log(result)
+
+  //   console.log(result)
+
   let imagesLinks = []
 
-  for (let i = 0; i < images.length; i++) {
-    const result = await cloudinary.v2.uploader.upload(images[i], {
-      folder: "ofu",
-    })
+  imagesLinks.push({
+    public_id: result.public_id,
+    url: result.secure_url,
+  })
 
-    imagesLinks.push({
-      public_id: result.public_id,
-      url: result.secure_url,
-    })
-  }
+  console.log("imageLinks", imagesLinks)
   req.body.images = imagesLinks
+
+  // console.log()
 
   const course = await Course.create(req.body)
 
@@ -25,4 +30,22 @@ export const uploadImage = async (req, res) => {
     success: true,
     course,
   })
+}
+export const imageDelete = async (req, res) => {
+  console.log(req.method)
+
+  return
+}
+
+export const getImages = async (req, res) => {
+  console.log(req.method)
+
+  const { resources } = await cloudinary.search
+    .expression("folder:ofu")
+    .sort_by("public_id", "desc")
+    .max_results(30)
+    .execute()
+
+  const publicIds = resources.map((file) => file.public_id)
+  res.send(publicIds)
 }
