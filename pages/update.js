@@ -4,10 +4,12 @@ import axios from "axios"
 import { useDispatch, useSelector } from "react-redux"
 import { loadImages } from "../redux/actions/imageActions"
 import Image from "next/image"
+import { useRouter } from "next/router"
 
 export default function Home() {
   const dispatch = useDispatch()
   const [imageIds, setImageIds] = useState([])
+  const router = useRouter()
 
   const image = useSelector((state) => state.image)
   const { loading, error, imageArray } = image
@@ -48,7 +50,9 @@ export default function Home() {
                 height={100}
                 width={300}
               />
-              <button onClick={() => imageUpdate(image._id)}>Update</button>
+              <button onClick={() => router.push(`/update/${image._id}`)}>
+                Update
+              </button>
             </div>
           ))}
       </div>

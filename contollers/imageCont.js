@@ -2,8 +2,6 @@ import Course from "../models/courseModel"
 import cloudinary from "../utils/cloudinary"
 
 export const uploadImage = async (req, res) => {
-  console.log(req.body.data)
-
   const fileStr = req.body.data
   const result = await cloudinary.uploader.upload(fileStr, {
     folder: "ofu",
@@ -22,7 +20,7 @@ export const uploadImage = async (req, res) => {
   console.log("imageLinks", imagesLinks)
   req.body.images = imagesLinks
 
-  // console.log()
+  console.log(req.body.images)
 
   const course = await Course.create(req.body)
 
@@ -65,9 +63,10 @@ export const imageDelete = async (req, res) => {
 //   return
 // }
 export const imageUpdate = async (req, res) => {
-  console.log(req.body.data)
+  // console.log(req.body.data)
 
   const fileStr = req.body.data
+
   const result = await cloudinary.uploader.upload(fileStr, {
     folder: "ofu",
   })
@@ -85,9 +84,25 @@ export const imageUpdate = async (req, res) => {
   console.log("imageLinks", imagesLinks)
   req.body.images = imagesLinks
 
-  // console.log()
+  console.log(req.body.images)
 
-  const course = await Course.create(req.body)
+  const course = await Course.updateOne(
+    { _id: req.query.id },
+    // { "images.$.images": req.body }
+    {
+      $addToSet: {
+        images: req.body.images,
+      },
+    }
+  )
+
+  // const course = await Course.findById({ _id: req.query.id })
+
+  // // await course.images.create(req.body)
+
+  // await course.images.insert(req.body.images)
+
+  // var course.images = req.body.images
 
   res.status(200).json({
     success: true,
