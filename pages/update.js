@@ -18,14 +18,14 @@ export default function Home() {
     dispatch(loadImages())
   }, [])
 
-  const imageDelete = async (id) => {
+  const imageUpdate = async (id) => {
     console.log(id)
     // var str = encodeURIComponent(id)
     // str.replace("ofu/", "")
 
     // console.log(str)
 
-    const { data } = await axios.delete(`/api/delete/${id}`)
+    const { data } = await axios.put(`/api/update/${id}`)
   }
 
   return (
@@ -48,9 +48,7 @@ export default function Home() {
                 height={100}
                 width={300}
               />
-              <button onClick={() => imageDelete(image.images[0]._id)}>
-                Delete
-              </button>
+              <button onClick={() => imageUpdate(image._id)}>Update</button>
             </div>
           ))}
       </div>

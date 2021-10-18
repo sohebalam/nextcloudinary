@@ -28,18 +28,24 @@ const lessonSchema = new mongoose.Schema(
   { timestamps: true }
 )
 const imageSchema = new mongoose.Schema({
-  image: {},
+  public_id: {
+    type: String,
+    required: true,
+  },
+  url: {
+    type: String,
+    required: true,
+  },
 })
 
 const courseSchema = new mongoose.Schema(
   {
-    // title: {
-    //   type: String,
-    //   trim: true,
-    //   minlength: 3,
-    //   maxlength: 320,
-    //   required: true,
-    // },
+    title: {
+      type: String,
+      trim: true,
+      minlength: 3,
+      maxlength: 320,
+    },
     // slug: {
     //   type: String,
     //   lowercase: true,
@@ -53,19 +59,8 @@ const courseSchema = new mongoose.Schema(
     //   type: Number,
     //   default: 9.99,
     // },
-    // image: [imageSchema],
-    images: [
-      {
-        public_id: {
-          type: String,
-          required: true,
-        },
-        url: {
-          type: String,
-          required: true,
-        },
-      },
-    ],
+    // images: [imageSchema],
+    images: [imageSchema],
     // category: String,
     // published: {
     //   type: Boolean,

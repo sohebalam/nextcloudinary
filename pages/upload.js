@@ -66,6 +66,7 @@ export default function Upload() {
           value={fileInputState}
           className="form-input"
         />
+        <input type='text" name="title' />
         <button className="btn" type="submit">
           Submit
         </button>
